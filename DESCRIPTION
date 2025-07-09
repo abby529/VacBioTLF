@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Lihua", "WU", , "lihua1.wu@sanofi.com", role = c("aut", "cre"))
 Description: a package for creating commom output of vaccine biomarker analysis.
-Imports:
+Depends:
     dplyr,
     tidyr,
     stringr,
