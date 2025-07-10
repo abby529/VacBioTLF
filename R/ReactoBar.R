@@ -164,7 +164,7 @@ ReactoBar <- function(indt, trtn, trtc, tits = c('Figure 1: Barplot for reactoge
 
 
         fig_nrow <- floor(sqrt(length(tmpPicList)))
-        fig_ncol <- ceiling(length(tmpPicList)/nrow)
+        fig_ncol <- ceiling(length(tmpPicList)/fig_nrow)
 
         tempP3 <- ggarrange(plotlist = tmpPicList,
                             nrow = fig_nrow,
