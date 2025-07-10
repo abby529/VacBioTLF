@@ -20,7 +20,7 @@ ReactoBar(
 \item{trtc:}{A character string presents the character treatment name in indt, such as 'TRT01A'.
 And there is a 121 relationship between trtn & trtc}
 
-\item{tits:}{titles for the 2 plots, a character vector of length 2
+\item{tits:}{titles for the 2 plots, a character vector of length 2.
 default value is c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
 'Figure 2: Barplot for reactogenicity (Max grade over D1-9)')}
 }
@@ -30,4 +30,16 @@ Max grade over D1-9 in 1 RTF file stored under REPORT/OUTPUT/Primary.
 }
 \note{
 There must be variable ATOXGD01, ..., ATOXGD09 in the input dataset indt
+}
+\examples{
+\dontrun{
+
+ReactoBar(indt = adrc,
+trtn ='TRT01AN',
+trtc = 'TRT01AC',
+tits = c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
+'Figure 2: Barplot for reactogenicity (Max grade over D1-9)'))
+
+}
+
 }

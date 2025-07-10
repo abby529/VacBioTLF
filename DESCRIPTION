@@ -1,5 +1,5 @@
 Package: VacBioTLF
-Title: Vaccine Biomarker Output (One Line, Title Case)
+Title: Vaccine Biomarker Output
 Version: 0.0.0.9000
 Authors@R: 
     person("Lihua", "WU", , "lihua1.wu@sanofi.com", role = c("aut", "cre"))
