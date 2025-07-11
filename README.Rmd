@@ -34,7 +34,7 @@ pak::pak("abby529/VacBioTLF")
 This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
-library(VacBioTLF)
+# library(VacBioTLF)
 ## basic example code
 ```
 

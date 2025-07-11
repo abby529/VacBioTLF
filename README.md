@@ -23,28 +23,7 @@ pak::pak("abby529/VacBioTLF")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(VacBioTLF)
-#> Loading required package: dplyr
-#> Warning: package 'dplyr' was built under R version 4.3.3
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-#> Loading required package: tidyr
-#> Warning: package 'tidyr' was built under R version 4.3.3
-#> Loading required package: stringr
-#> Warning: package 'stringr' was built under R version 4.3.3
-#> Loading required package: ggpubr
-#> Warning: package 'ggpubr' was built under R version 4.3.3
-#> Loading required package: ggplot2
-#> Loading required package: reporter
-#> Warning: package 'reporter' was built under R version 4.3.3
-#> Loading required package: common
-#> Warning: package 'common' was built under R version 4.3.3
+# library(VacBioTLF)
 ## basic example code
 ```
 

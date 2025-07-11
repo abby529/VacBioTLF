@@ -5,6 +5,7 @@ Authors@R:
     person("Lihua", "WU", , "lihua1.wu@sanofi.com", role = c("aut", "cre"))
 Description: a package for creating commom output of vaccine biomarker analysis.
 Depends:
+    here,
     dplyr,
     tidyr,
     stringr,

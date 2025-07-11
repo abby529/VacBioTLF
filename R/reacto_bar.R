@@ -1,13 +1,14 @@
-#' ReactoBar
+#' reacto_bar
 #'
 #' @description This function generates 2 reactogenicity barplots for Max grade over D1-3 and
-#' Max grade over D1-9 in 1 RTF file stored under REPORT/OUTPUT/Primary.
+#' Max grade over D1-9 in 1 RTF file stored under REPORT/OUTPUT/Primary under eWISE environment,
+#' or current working path/Primary under local environment.
 #' @note There must be variable ATOXGD01, ..., ATOXGD09 in the input dataset indt
 #'
 #' @param indt: A R dataset name which is used to create the bar plot, such as adrc
-#' @param trtn: A character string presents the numeric treatment name in indt, such as 'TRT01AN'
-#' @param trtc: A character string presents the character treatment name in indt, such as 'TRT01A'.
-#' And there is a 121 relationship between trtn & trtc
+#' @param trtnV: A character string presents the numeric treatment name in indt, such as 'TRT01AN'
+#' @param trtcV: A character string presents the character treatment name in indt, such as 'TRT01A'.
+#' And there is a 121 relationship between trtnV & trtcV
 #' @param tits: titles for the 2 plots, a character vector of length 2.
 #' default value is c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
 #' 'Figure 2: Barplot for reactogenicity (Max grade over D1-9)')
@@ -15,21 +16,21 @@
 #' @examples
 #' \dontrun{
 #'
-#' ReactoBar(indt = adrc,
-#' trtn ='TRT01AN',
-#' trtc = 'TRT01AC',
+#' reacto_bar(indt = adrc,
+#' trtnV ='TRT01AN',
+#' trtcV = 'TRT01AC',
 #' tits = c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
 #' 'Figure 2: Barplot for reactogenicity (Max grade over D1-9)'))
 #'
 #' }
 #'
 #' @export
-ReactoBar <- function(indt, trtn, trtc, tits = c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
+reacto_bar <- function(indt, trtnV, trtcV, tits = c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
                                                  'Figure 2: Barplot for reactogenicity (Max grade over D1-9)')) {
 
     # prepare data
     comb <- indt %>%
-        mutate(self_trtn = get(trtn), self_trtc = get(trtc)) %>%
+        mutate(self_trtn = get(trtnV), self_trtc = get(trtcV)) %>%
         # cover issue: CEDECOD is missing
         mutate(CEDECOD = ifelse(CEDECOD == '', str_to_title(CETERM), CEDECOD)) %>%
         select(USUBJID, self_trtn, self_trtc, CEDECOD, CECAT, CESCAT, starts_with('ATOXGD')) %>%
@@ -78,10 +79,15 @@ ReactoBar <- function(indt, trtn, trtc, tits = c('Figure 1: Barplot for reactoge
     testV <- unique(testD$CEDECOD)
 
 
+
     # create folder to store the RTF file
+    if (!exists("REPO")){
+      REPO <- here::here()
+    }
+
     folder_path <- file.path(REPO, 'Primary')
     if (!file.exists(folder_path)) {
-        dir.create(folder_path, recursive = TRUE)
+      dir.create(folder_path, recursive = TRUE)
     }
 
 
@@ -97,7 +103,6 @@ ReactoBar <- function(indt, trtn, trtc, tits = c('Figure 1: Barplot for reactoge
 
     invarV <- rep(c('MAX3', 'MAX9'), each = 1)
     byvarL <- rep(list(''), 2)
-
 
 
     # The last footnote
