@@ -5,11 +5,13 @@
 #' or current working path/Primary under local environment.
 #' @note There must be variable ATOXGD01, ..., ATOXGD09 in the input dataset indt
 #'
-#' @param indt: A R dataset name which is used to create the bar plot, such as adrc
-#' @param trtnV: A character string presents the numeric treatment name in indt, such as 'TRT01AN'
-#' @param trtcV: A character string presents the character treatment name in indt, such as 'TRT01A'.
+#' @param indt A R dataset name which is used to create the bar plot, such as adrc
+#' @param trtnV A character string presents the numeric treatment name in indt, such as 'TRT01AN'
+#' @param trtcV A character string presents the character treatment name in indt, such as 'TRT01A'.
 #' And there is a 121 relationship between trtnV & trtcV
-#' @param tits: titles for the 2 plots, a character vector of length 2.
+#' @param pgName A character string presents program name showing in the last footnote in the RTF file,
+#' the default value is 'pri_reacto_bar'
+#' @param tits titles for the 2 plots, a character vector of length 2.
 #' default value is c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
 #' 'Figure 2: Barplot for reactogenicity (Max grade over D1-9)')
 #'
@@ -19,13 +21,18 @@
 #' reacto_bar(indt = adrc,
 #' trtnV ='TRT01AN',
 #' trtcV = 'TRT01AC',
+#' pgName = 'pri_reacto_bar',
 #' tits = c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
 #' 'Figure 2: Barplot for reactogenicity (Max grade over D1-9)'))
 #'
 #' }
 #'
 #' @export
-reacto_bar <- function(indt, trtnV, trtcV, tits = c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
+reacto_bar <- function(indt,
+                       trtnV,
+                       trtcV,
+                       pgName = 'pri_reacto_bar',
+                       tits = c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
                                                  'Figure 2: Barplot for reactogenicity (Max grade over D1-9)')) {
 
     # prepare data
@@ -83,6 +90,7 @@ reacto_bar <- function(indt, trtnV, trtcV, tits = c('Figure 1: Barplot for react
     # create folder to store the RTF file
     if (!exists("REPO")){
       REPO <- here::here()
+      W_STUDY <- ''
     }
 
     folder_path <- file.path(REPO, 'Primary')
@@ -92,7 +100,7 @@ reacto_bar <- function(indt, trtnV, trtcV, tits = c('Figure 1: Barplot for react
 
 
     # outout to RTF
-    pgname <- 'pri_bar_reacto'
+    pgname <- pgName
     outT <- 'rtf'
     fname = paste0('Primary/', pgname, '.',outT)
     dtsource <- 'adbm'

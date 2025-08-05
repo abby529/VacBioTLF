@@ -8,9 +8,12 @@ imm_summary_gmt(
   indt,
   indt2,
   groupV = "PARAM",
+  groupLableV = "",
   grpColSize = 6.5,
   timeV = "VIS",
-  timeColSize = 3,
+  timeColSize = 2.5,
+  trtCntPerPage = 3,
+  statColSize = c(1, 2.1, 2.3),
   avalV = "AVAL",
   foldV = "FOLDRISE",
   trtnV = "TRT01AN",
@@ -28,38 +31,46 @@ imm_summary_gmt(
 )
 }
 \arguments{
-\item{indt:}{A R dataset name which contains the immunogenicity data, such as adis}
+\item{indt}{A R dataset name which contains the immunogenicity data, such as adis}
 
-\item{indt2:}{A R dataset name which used to calculate the big N in the header, such as adsl}
+\item{indt2}{A R dataset name which used to calculate the big N in the header, such as adsl}
 
-\item{groupV:}{A character vector presents category variable names used in the table and can be found in indt,
+\item{groupV}{A character vector presents category variable names used in the table and can be found in indt,
 such as 'PARAM' or c('AGE', 'PARAM)}
 
-\item{grpColSize:}{A float vector presents the width for category variables, such as 6.5 or c(5, 6.5),
+\item{groupLableV}{A character vector with same length of paramter groupV presents the lable of category variable,
+default value is ''. when groupV = 'PARAM', groupLableV can be 'Parameter'}
+
+\item{grpColSize}{A float vector presents the width for category variables, such as 6.5 or c(5, 6.5),
 default value is 6.5 for each category variable}
 
-\item{timeV:}{A character string presents visit variable name used in the table and can be found in indt,
+\item{timeV}{A character string presents visit variable name used in the table and can be found in indt,
 such as VISIT}
 
-\item{timeColSize:}{A float number presents the width for visit variable, such as 3}
+\item{timeColSize}{A float number presents the width for visit variable, default value is 2.5}
 
-\item{avalV:}{A character string presents analysis variable name used to calculate GMT and can be found in indt,
+\item{trtCntPerPage}{A integer number presents number of treatment on each page, default value is 3}
+
+\item{statColSize}{A float number vector of length 3 for the width of M, GMT/GMTR and (95\% CI) columns,
+the default value if c(1, 2.1, 2.3)}
+
+\item{avalV}{A character string presents analysis variable name used to calculate GMT and can be found in indt,
 the default value is 'AVAL'}
 
-\item{foldV:}{A character string presents fold rise variable name used to calculate GMTR and can be found in indt,
+\item{foldV}{A character string presents fold rise variable name used to calculate GMTR and can be found in indt,
 the default value is 'FOLDRISE'}
 
-\item{trtnV:}{A character string presents the numeric treatment name in indt, such as 'TRT01AN'}
+\item{trtnV}{A character string presents the numeric treatment name in indt, such as 'TRT01AN'}
 
-\item{trtcV:}{A character string presents the character treatment name in indt and indt2, such as 'TRT01A'.
+\item{trtcV}{A character string presents the character treatment name in indt and indt2, such as 'TRT01A'.
 And there is a 121 relationship between trtnV & trtcV}
 
-\item{pgName:}{A character string presents program name showing in the last footnote in the RTF file,
+\item{pgName}{A character string presents program name showing in the last footnote in the RTF file,
 the default value is 'imm_summary_gmt'}
 
-\item{titV:}{A character string presents the title showing in the RTF file, the default value is ''}
+\item{titV}{A character string presents the title showing in the RTF file, the default value is ''}
 
-\item{footxV:}{x = 1, ...,8, a character string presents the footnote showing in the RTF file, the default value is ''}
+\item{footxV}{x = 1, ...,8, a character string presents the footnote showing in the RTF file, the default value is ''}
 }
 \description{
 This function generates gmt table for immunogenicity in 1 RTF file
@@ -72,11 +83,19 @@ There must be variable ATOXGD01, ..., ATOXGD09 in the input dataset indt
 \examples{
 \dontrun{
 
-imm_summary_gmt(indt = final, indt2 = adsl,
-groupV = 'PARAM', grpColSize = 6.5,
-timeV = 'VIS', timeColSize = 3,
-trtnV = 'TRT01AN', trtcV = 'TRT01A',
-avalV = 'AVAL', foldV = 'FOLDRISE',
+imm_summary_gmt(indt = final,
+indt2 = adsl,
+groupV = 'PARAM',
+groupLableV = 'Parameter',
+grpColSize = 6.5,
+timeV = 'VIS',
+timeColSize = 2.5,
+trtCntPerPage = 3,
+statColSize = c(1, 2.1, 2.3),
+trtnV = 'TRT01AN',
+trtcV = 'TRT01A',
+avalV = 'AVAL',
+foldV = 'FOLDRISE',
 pgName = 'imm_summary_gmt',
 titV = 'Table 2.55 Summary of geometric means of antibody titers after vaccination - mFAS',
 foot1V = 'M: number of participants with available data for the relevant endpoint.',

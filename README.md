@@ -6,7 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of VacBioTLF is to …
+The goal of VacBioTLF is to simplify the TLF programming work used for
+vaccine biomarker analysis
 
 ## Installation
 
@@ -14,8 +15,8 @@ You can install the development version of VacBioTLF from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("abby529/VacBioTLF")
+# install.packages("devtools")
+devtools::install_github("abby529/VacBioTLF")
 ```
 
 ## Example

@@ -5,35 +5,48 @@
 #' or current working path/Primary under local environment.
 #' @note There must be variable ATOXGD01, ..., ATOXGD09 in the input dataset indt
 #'
-#' @param indt: A R dataset name which contains the immunogenicity data, such as adis
-#' @param indt2: A R dataset name which used to calculate the big N in the header, such as adsl
-#' @param groupV: A character vector presents category variable names used in the table and can be found in indt,
+#' @param indt A R dataset name which contains the immunogenicity data, such as adis
+#' @param indt2 A R dataset name which used to calculate the big N in the header, such as adsl
+#' @param groupV A character vector presents category variable names used in the table and can be found in indt,
 #' such as 'PARAM' or c('AGE', 'PARAM)
-#' @param grpColSize: A float vector presents the width for category variables, such as 6.5 or c(5, 6.5),
+#' @param groupLableV A character vector with same length of paramter groupV presents the lable of category variable,
+#' default value is ''. when groupV = 'PARAM', groupLableV can be 'Parameter'
+#' @param grpColSize A float vector presents the width for category variables, such as 6.5 or c(5, 6.5),
 #' default value is 6.5 for each category variable
-#' @param timeV: A character string presents visit variable name used in the table and can be found in indt,
+#' @param timeV A character string presents visit variable name used in the table and can be found in indt,
 #' such as VISIT
-#' @param timeColSize: A float number presents the width for visit variable, such as 3
-#' @param avalV: A character string presents analysis variable name used to calculate GMT and can be found in indt,
+#' @param timeColSize A float number presents the width for visit variable, default value is 2.5
+#' @param trtCntPerPage A integer number presents number of treatment on each page, default value is 3
+#' @param statColSize A float number vector of length 3 for the width of M, GMT/GMTR and (95% CI) columns,
+#' the default value if c(1, 2.1, 2.3)
+#' @param avalV A character string presents analysis variable name used to calculate GMT and can be found in indt,
 #' the default value is 'AVAL'
-#' @param foldV: A character string presents fold rise variable name used to calculate GMTR and can be found in indt,
+#' @param foldV A character string presents fold rise variable name used to calculate GMTR and can be found in indt,
 #' the default value is 'FOLDRISE'
-#' @param trtnV: A character string presents the numeric treatment name in indt, such as 'TRT01AN'
-#' @param trtcV: A character string presents the character treatment name in indt and indt2, such as 'TRT01A'.
+#' @param trtnV A character string presents the numeric treatment name in indt, such as 'TRT01AN'
+#' @param trtcV A character string presents the character treatment name in indt and indt2, such as 'TRT01A'.
 #' And there is a 121 relationship between trtnV & trtcV
-#' @param pgName: A character string presents program name showing in the last footnote in the RTF file,
+#' @param pgName A character string presents program name showing in the last footnote in the RTF file,
 #' the default value is 'imm_summary_gmt'
-#' @param titV: A character string presents the title showing in the RTF file, the default value is ''
-#' @param footxV: x = 1, ...,8, a character string presents the footnote showing in the RTF file, the default value is ''
+#' @param titV A character string presents the title showing in the RTF file, the default value is ''
+#' @param footxV x = 1, ...,8, a character string presents the footnote showing in the RTF file, the default value is ''
 #'
 #' @examples
 #' \dontrun{
 #'
-#' imm_summary_gmt(indt = final, indt2 = adsl,
-#' groupV = 'PARAM', grpColSize = 6.5,
-#' timeV = 'VIS', timeColSize = 3,
-#' trtnV = 'TRT01AN', trtcV = 'TRT01A',
-#' avalV = 'AVAL', foldV = 'FOLDRISE',
+#' imm_summary_gmt(indt = final,
+#' indt2 = adsl,
+#' groupV = 'PARAM',
+#' groupLableV = 'Parameter',
+#' grpColSize = 6.5,
+#' timeV = 'VIS',
+#' timeColSize = 2.5,
+#' trtCntPerPage = 3,
+#' statColSize = c(1, 2.1, 2.3),
+#' trtnV = 'TRT01AN',
+#' trtcV = 'TRT01A',
+#' avalV = 'AVAL',
+#' foldV = 'FOLDRISE',
 #' pgName = 'imm_summary_gmt',
 #' titV = 'Table 2.55 Summary of geometric means of antibody titers after vaccination - mFAS',
 #' foot1V = 'M: number of participants with available data for the relevant endpoint.',
@@ -48,9 +61,12 @@
 imm_summary_gmt <- function(indt,
                             indt2,
                             groupV = 'PARAM',
+                            groupLableV = '',
                             grpColSize = 6.5,
                             timeV = 'VIS',
-                            timeColSize = 3,
+                            timeColSize = 2.5,
+                            trtCntPerPage = 3,
+                            statColSize = c(1, 2.1, 2.3),
                             avalV = 'AVAL',
                             foldV = 'FOLDRISE',
                             trtnV = 'TRT01AN',
@@ -69,11 +85,11 @@ imm_summary_gmt <- function(indt,
 
   tempDT <- indt %>%
     ungroup() %>%
-    mutate(VISDY = case_when(str_extract(get(timeV), '(?<=D)\\d+') ~ as.numeric(str_extract(get(timeV), '(?<=D)\\d+')),
-                             str_extract(get(timeV), '(?<=W)\\d+') ~ as.numeric(str_extract(get(timeV), '(?<=W)\\d+'))*7,
-                             str_extract(get(timeV), '(?<=M)\\d+') ~ as.numeric(str_extract(get(timeV), '(?<=M)\\d+'))*30,
-                             str_extract(get(timeV), '(?<=Y)\\d+') ~ as.numeric(str_extract(get(timeV), '(?<=Y)\\d+'))*365,
-                             ))
+    mutate(VISDY = case_when(str_detect(get(timeV), '(?<=D)\\d+') ~ as.numeric(str_extract(get(timeV), '(?<=D)\\d+')),
+                             str_detect(get(timeV), '(?<=W)\\d+') ~ as.numeric(str_extract(get(timeV), '(?<=W)\\d+'))*7,
+                             str_detect(get(timeV), '(?<=M)\\d+') ~ as.numeric(str_extract(get(timeV), '(?<=M)\\d+'))*30,
+                             str_detect(get(timeV), '(?<=Y)\\d+') ~ as.numeric(str_extract(get(timeV), '(?<=Y)\\d+'))*365
+    ))
 
   tempDT2 <- tempDT %>%
     mutate(log10V = log10(get(avalV)),
@@ -87,7 +103,7 @@ imm_summary_gmt <- function(indt,
   tempDT3 <- tempDT2 %>%
     filter(VISDY != 1) %>%
     mutate(log10V = log10(get(foldV)),
-           timePoint = paste0('Ratio ', get(timeV), d1C$timePoint),
+           timePoint = paste0('Ratio ', get(timeV), '/', d1C$timePoint),
            timePartn = 2)
 
   tempDT4 <- bind_rows(tempDT2, tempDT3) %>%
@@ -164,6 +180,7 @@ imm_summary_gmt <- function(indt,
   # create folder to store the RTF file
   if (!exists("REPO")){
     REPO <- here::here()
+    W_STUDY <- ''
   }
 
   folder_path <- file.path(REPO, 'Primary')
@@ -202,11 +219,11 @@ imm_summary_gmt <- function(indt,
                   ' (', format(Sys.time(),'%d%b%Y %H:%M'),')')
 
 
-
+  footVars <- unlist(mget(paste0("foot", 1:8, "V")))
+  footVars2 <- footVars[footVars != '']
 
   tbl_ftnt <- create_text('')  %>%
-    footnotes(paste0(foot1V, '\n', foot2V, '\n', foot3V, '\n',
-                     foot9),
+    footnotes(paste0(c(footVars2, foot9), collapse = '\n'),
               borders = 'top',
               blank_row = 'none')
 
@@ -222,13 +239,13 @@ imm_summary_gmt <- function(indt,
                       label = trtDT$treatmentName[v],
                       bold = T, underline = F, standard_eval = T)
 
-    if (v %% 2 == 1 & v > 2){
+    if (v %% trtCntPerPage == 1 & v > trtCntPerPage){
       fin <- fin %>%
-        define(paste0('mc_', treatmentnV[v]), label = 'M', width = 1, align = 'center', standard_eval = T, page_wrap = T)
+        define(paste0('mc_', treatmentnV[v]), label = 'M', width = statColSize[1], align = 'center', standard_eval = T, page_wrap = T)
 
     }else{
       fin <- fin %>%
-        define(paste0('mc_', treatmentnV[v]), label = 'M', width = 1, align = 'center', standard_eval = T)
+        define(paste0('mc_', treatmentnV[v]), label = 'M', width = statColSize[1], align = 'center', standard_eval = T)
     }
 
   }
@@ -241,16 +258,16 @@ imm_summary_gmt <- function(indt,
 
   for (p in 1:paramCnt){
     fin <- fin %>%
-      define(groupV[p], label = '', width = grpColSize[p], id_var = T, align = 'left', blank_after = T, dedupe = T, standard_eval = T)
+      define(groupV[p], label = groupLableV[p], width = grpColSize[p], id_var = T, align = 'left', blank_after = T, dedupe = T, standard_eval = T)
   }
 
 
 
   fin <- fin %>%
     define(timePoint, label = 'Time Point', width = timeColSize, id_var = T, align = 'left', blank_after = F) %>%
-    define(statColNameV[str_detect(statColNameV, 'gmc_')], label = 'GMT or GMTR', width = 2.5, align = 'center', standard_eval = T) %>%
-    define(pValueV[str_detect(pValueV, 'cic_')],  label = '(95% CI)', width = 2.3, align = 'center', standard_eval = T) %>%
-    define(statColNameV[length(statColNameV)], label = '(95% CI)', width = 2.3, align = 'center', standard_eval = T)
+    define(statColNameV[str_detect(statColNameV, 'gmc_')], label = 'GMT/GMTR', width = statColSize[2], align = 'center', standard_eval = T) %>%
+    define(pValueV[str_detect(pValueV, 'cic_')],  label = '(95% CI)', width = statColSize[3], align = 'center', standard_eval = T) %>%
+    define(statColNameV[length(statColNameV)], label = '(95% CI)', width = statColSize[3], align = 'center', standard_eval = T)
 
 
   # Create the report

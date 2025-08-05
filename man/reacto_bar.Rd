@@ -8,19 +8,23 @@ reacto_bar(
   indt,
   trtnV,
   trtcV,
+  pgName = "pri_reacto_bar",
   tits = c("Figure 1: Barplot for reactogenicity (Max grade over D1-3)",
     "Figure 2: Barplot for reactogenicity (Max grade over D1-9)")
 )
 }
 \arguments{
-\item{indt:}{A R dataset name which is used to create the bar plot, such as adrc}
+\item{indt}{A R dataset name which is used to create the bar plot, such as adrc}
 
-\item{trtnV:}{A character string presents the numeric treatment name in indt, such as 'TRT01AN'}
+\item{trtnV}{A character string presents the numeric treatment name in indt, such as 'TRT01AN'}
 
-\item{trtcV:}{A character string presents the character treatment name in indt, such as 'TRT01A'.
+\item{trtcV}{A character string presents the character treatment name in indt, such as 'TRT01A'.
 And there is a 121 relationship between trtnV & trtcV}
 
-\item{tits:}{titles for the 2 plots, a character vector of length 2.
+\item{pgName}{A character string presents program name showing in the last footnote in the RTF file,
+the default value is 'pri_reacto_bar'}
+
+\item{tits}{titles for the 2 plots, a character vector of length 2.
 default value is c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
 'Figure 2: Barplot for reactogenicity (Max grade over D1-9)')}
 }
@@ -38,6 +42,7 @@ There must be variable ATOXGD01, ..., ATOXGD09 in the input dataset indt
 reacto_bar(indt = adrc,
 trtnV ='TRT01AN',
 trtcV = 'TRT01AC',
+pgName = 'pri_reacto_bar',
 tits = c('Figure 1: Barplot for reactogenicity (Max grade over D1-3)',
 'Figure 2: Barplot for reactogenicity (Max grade over D1-9)'))
 
