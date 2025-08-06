@@ -76,8 +76,8 @@ such as 2.5}
 This function generates a box plot of biomarker readouts on a logarithmic scale with a base of 10.
 At the top of the plot, the p-values of pairwise comparisons between visits are displayed,
 and at the bottom, the numbers of each box are shown respectively.
-The output is stored in 1 RTF file under REPORT/OUTPUT/Primary under eWISE environment,
-or current working path/Primary under local environment.
+The output is stored in 1 RTF file under REPORT/OUTPUT/subFolder under eWISE environment,
+or current working path/subFolder under local environment.
 }
 \note{
 In the input dataset indt, in addition to the required parameters, there must also be the variable USUBJID.

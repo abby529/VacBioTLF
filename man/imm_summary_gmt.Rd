@@ -74,8 +74,8 @@ the default value is 'imm_summary_gmt'}
 }
 \description{
 This function generates gmt table for immunogenicity in 1 RTF file
-stored under REPORT/OUTPUT/Primary under eWISE environment,
-or current working path/Primary under local environment.
+stored under REPORT/OUTPUT/subFolder under eWISE environment,
+or current working path/subFolder under local environment.
 }
 \note{
 There must be variable ATOXGD01, ..., ATOXGD09 in the input dataset indt

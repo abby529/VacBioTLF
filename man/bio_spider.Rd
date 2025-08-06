@@ -71,18 +71,18 @@ the default value is ''.}
 }
 \description{
 This function generates a spider plot of mean of biomarker readouts.
-The output is stored in 1 RTF file under REPORT/OUTPUT/Primary under eWISE environment,
-or current working path/Primary under local environment.
+The output is stored in 1 RTF file under REPORT/OUTPUT/subFolder under eWISE environment,
+or current working path/subFolder under local environment.
 }
 \examples{
 \dontrun{
 
-adbm <- readRDS(here::here("data", "example.data.rds")) \%>\%
+adbm <- readRDS(system.file("extdata", "example.data.rds", "VacBioTLF")) \%>\%
 filter(!is.na(R2BASE) & VISITNUM > 10) \%>\%
 mutate(VIS = str_split_i(VISIT, '/', 2),
 sexn = ifelse(SEX == 'F', 2, 1))
 
-pvalue.data <- readRDS(here::here("data", "pvalue.data.rds"))
+pvalue.data <- readRDS(system.file("extdata", "pvalue.data.rds", "VacBioTLF"))
 
 bio_spider(
 indt = adbm,

@@ -63,8 +63,8 @@ the default value is NULL.}
 }
 \description{
 This function generates a heatmap of biomarker readouts.
-The output is stored in 1 RTF file under REPORT/OUTPUT/Primary under eWISE environment,
-or current working path/Primary under local environment.
+The output is stored in 1 RTF file under REPORT/OUTPUT/subFolder under eWISE environment,
+or current working path/subFolder under local environment.
 }
 \note{
 In the input dataset indt, in addition to the required parameters, there must also be the variable USUBJID.
@@ -72,7 +72,7 @@ In the input dataset indt, in addition to the required parameters, there must al
 \examples{
 \dontrun{
 
-adbm <- readRDS(here::here("data", "example.data.rds")) \%>\%
+adbm <- readRDS(system.file("extdata", "example.data.rds", "VacBioTLF")) \%>\%
 filter(!is.na(AVAL)) \%>\%
 mutate(VIS = str_split_i(VISIT, '/', 2))
 

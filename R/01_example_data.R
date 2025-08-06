@@ -90,6 +90,6 @@ example.data <- bind_rows(example.data.v1, example.data.v2, example.data.v3) %>%
 
 
 # save data
-saveRDS(example.data, file = here::here('data', 'example.data.rds'))
+saveRDS(example.data, file = here::here('inst', 'extdata', 'example.data.rds'))
 
 
